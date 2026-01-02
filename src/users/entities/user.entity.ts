@@ -13,17 +13,17 @@ import {
 @Entity('users')
 export class User {
   /**
-   * ID único del usuario (UUID)
+   * ID único del usuario (UUID) - user_id según ERD
    * Se genera automáticamente por la base de datos
    */
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   /**
-   * Nombre completo del usuario
+   * Nombre completo del usuario - full_name según ERD
    * Tipo: varchar(255) en la base de datos
    */
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'full_name' })
   fullName: string;
 
   /**
