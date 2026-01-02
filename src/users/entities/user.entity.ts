@@ -1,17 +1,59 @@
-import { Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity()
+/**
+ * Entidad User - Representa un usuario en la base de datos
+ * Define la estructura de la tabla 'users' en PostgreSQL
+ */
+@Entity('users')
 export class User {
-    @PrimaryGeneratedColumn('uuid') // ID tipo UUID generado automaticamente
-    id: string;
+  /**
+   * ID único del usuario (UUID)
+   * Se genera automáticamente por la base de datos
+   */
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column('text')
-    fullName: string;
+  /**
+   * Nombre completo del usuario
+   * Tipo: varchar(255) en la base de datos
+   */
+  @Column({ type: 'varchar', length: 255 })
+  fullName: string;
 
-    @Column('text', { unique: true}) //Email único
-    email: string;
+  /**
+   * Email del usuario (debe ser único)
+   * Se valida que no existan emails duplicados
+   * Tipo: varchar(255) con restricción UNIQUE
+   */
+  @Column({ type: 'varchar', length: 255, unique: true })
+  email: string;
 
-    @Column('text', { select: false}) // select: false para seguridad( no devolvemos el password en las consultas)
-    password: string;
-    
+  /**
+   * Contraseña hasheada del usuario
+   * select: false - No se devuelve en consultas por defecto (seguridad)
+   * Solo se incluye explícitamente cuando se necesita (ej: validación de login)
+   * Tipo: varchar(255)
+   */
+  @Column({ type: 'varchar', length: 255, select: false })
+  password: string;
+
+  /**
+   * Fecha de creación del registro
+   * Se establece automáticamente al crear el usuario
+   */
+  @CreateDateColumn()
+  createdAt: Date;
+
+  /**
+   * Fecha de última actualización del registro
+   * Se actualiza automáticamente cada vez que se modifica el usuario
+   */
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
