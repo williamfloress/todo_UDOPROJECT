@@ -38,7 +38,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       
       // secretOrKey: La clave secreta para verificar la firma del token
       // Debe coincidir con la clave usada para firmar el token en el login
-      secretOrKey: configService.get('JWT_SECRET'),
+      // Usamos getOrThrow para asegurar que el valor no sea undefined
+      secretOrKey: configService.getOrThrow('JWT_SECRET'),
     });
   }
 

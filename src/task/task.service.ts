@@ -43,14 +43,22 @@ export class TaskService {
    * @returns Promise<Task> - La tarea creada con todos sus datos
    */
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
-    // Crea una nueva instancia de Task con los datos del DTO
-    const task = this.tasksRepository.create({
-      ...createTaskDto,
+    // Prepara los datos para crear la tarea
+    // Construimos el objeto explícitamente para evitar problemas de inferencia de tipos
+    const taskData: Partial<Task> = {
+      name: createTaskDto.name,
+      description: createTaskDto.description,
+      storyPoints: createTaskDto.storyPoints,
+      dueDate: createTaskDto.dueDate ? new Date(createTaskDto.dueDate) : null,
+      status: createTaskDto.status,
+      category_id: createTaskDto.category_id,
+      assigned_to: createTaskDto.assigned_to,
       // Asigna el ID del usuario autenticado al campo 'created_by' según ERD
       created_by: userId,
-      // Convierte la fecha de vencimiento de string a Date si se proporciona
-      dueDate: createTaskDto.dueDate ? new Date(createTaskDto.dueDate) : null,
-    });
+    };
+
+    // Crea una nueva instancia de Task con los datos preparados
+    const task = this.tasksRepository.create(taskData);
 
     // Guarda la tarea en la base de datos y retorna el resultado
     return await this.tasksRepository.save(task);

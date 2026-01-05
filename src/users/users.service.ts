@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -83,11 +83,18 @@ export class UsersService {
    * @returns Usuario encontrado (sin contraseña)
    */
   async findOne(id: string): Promise<User> {
-    return await this.usersRepository.findOne({
+    const user = await this.usersRepository.findOne({
       where: { id },
       // Excluir password del resultado por seguridad
       select: ['id', 'email', 'fullName', 'createdAt', 'updatedAt'],
     });
+
+    // Si el usuario no existe, lanzar una excepción
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    return user;
   }
 
   /**

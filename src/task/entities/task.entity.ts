@@ -77,7 +77,7 @@ export class Task {
    * Se mapea a la columna 'due_date' en la base de datos (snake_case)
    */
   @Column({ type: 'timestamp', nullable: true, name: 'due_date' })
-  dueDate: Date;
+  dueDate: Date | null;
 
   /**
    * status según ERD - Estado de la tarea (ENUM)
