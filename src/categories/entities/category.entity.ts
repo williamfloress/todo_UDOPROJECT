@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-// Nota: La relación con Task se agregará cuando se cree la entidad Task
-// import { Task } from '../../tasks/entities/task.entity';
+// Importa la entidad Task para la relación OneToMany
+import { Task } from '../../task/entities/task.entity';
 
 /**
  * Entidad Category - Representa una categoría en la base de datos
@@ -53,10 +53,11 @@ export class Category {
   /**
    * Relación OneToMany con Task según ERD
    * Una categoría puede tener muchas tareas (1:N)
-   * Esta relación se descomentará cuando se cree la entidad Task
+   * Esta relación permite acceder a todas las tareas de una categoría
+   * El segundo parámetro (task) => task.category especifica el lado inverso de la relación
    */
-  // @OneToMany(() => Task, (task) => task.category)
-  // tasks: Task[];
+  @OneToMany(() => Task, (task) => task.category)
+  tasks: Task[];
 
   /**
    * Fecha de creación del registro
