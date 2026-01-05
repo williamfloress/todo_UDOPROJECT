@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 // Importa la entidad Category para la relación ManyToOne
@@ -17,6 +18,9 @@ import { User } from '../../users/entities/user.entity';
 
 // Importa el enum TaskStatus para el campo status
 import { TaskStatus } from '../enums/task-status.enum';
+
+// Importa la entidad Comment para la relación OneToMany
+import { Comment } from '../../comments/entities/comment.entity';
 
 /**
  * Entidad Task - Representa una tarea (TO-DO) en la base de datos
@@ -157,4 +161,13 @@ export class Task {
    */
   @UpdateDateColumn()
   updatedAt: Date;
+
+  /**
+   * Relación OneToMany con Comment según ERD
+   * Una tarea puede tener muchos comentarios (1:N)
+   * Esta relación permite acceder a todos los comentarios de una tarea
+   * El segundo parámetro (comment) => comment.task especifica el lado inverso de la relación
+   */
+  @OneToMany(() => Comment, (comment) => comment.task)
+  comments: Comment[];
 }

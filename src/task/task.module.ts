@@ -43,5 +43,11 @@ import { CategoriesModule } from '../categories/categories.module';
    * TaskService: Contiene la lógica de negocio para las tareas
    */
   providers: [TaskService],
+  
+  /**
+   * exports - Servicios y módulos que este módulo exporta para que otros módulos puedan usarlos
+   * TaskService: Se exporta para que CommentsModule pueda usar TasksService
+   */
+  exports: [TaskService], // Exportar TaskService para usar en CommentsModule
 })
 export class TaskModule {}
